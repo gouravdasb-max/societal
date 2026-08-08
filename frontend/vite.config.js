@@ -16,17 +16,34 @@ export default defineConfig({
         background_color: '#07110b',
         display: 'standalone',
         start_url: '/',
+        id: '/',
         icons: [
           {
-            src: 'https://cdn-icons-png.flaticon.com/512/2830/2830305.png',
+            src: '/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'https://cdn-icons-png.flaticon.com/512/2830/2830305.png',
+            src: '/icon-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'maskable'
+          }
+        ],
+        screenshots: [
+          {
+            src: '/screenshot-desktop.png',
+            sizes: '1280x720',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Societal Desktop Dashboard'
+          },
+          {
+            src: '/screenshot-mobile.png',
+            sizes: '720x1280',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'Societal Mobile Interface'
           }
         ]
       },

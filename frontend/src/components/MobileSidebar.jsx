@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import usePWA from "../hooks/usePWA.js";
 
 const residentLinks = [
   { to: "/dashboard", label: "Home", icon: "🏡" },
@@ -44,6 +45,7 @@ const guardLinks = [
 
 export default function MobileSidebar({ isOpen, onClose, onLogoutRequest }) {
   const { user } = useAuth();
+  const { canInstall, installPWA } = usePWA();
   const navigate = useNavigate();
   let links;
   if (user?.role === "admin") {
@@ -126,6 +128,19 @@ export default function MobileSidebar({ isOpen, onClose, onLogoutRequest }) {
               <span className="code-label">Invite code:</span>
               <span className="code-value">{user.society.inviteCode}</span>
             </div>
+          )}
+
+          {canInstall && (
+            <button
+              className="btn btn-primary btn-sm btn-block"
+              style={{ marginBottom: 12 }}
+              onClick={() => {
+                onClose();
+                installPWA();
+              }}
+            >
+              ⏬ Install App
+            </button>
           )}
 
           <button

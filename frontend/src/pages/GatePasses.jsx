@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import AppLayout from "../components/AppLayout.jsx";
 import Loader from "../components/Loader.jsx";
 import api from "../services/api.js";
+import ImageModal from "../components/ImageModal.jsx";
 
 const STATUS_PILL = { active: "pill-success", used: "pill-muted", expired: "pill-warning", cancelled: "pill-danger" };
 
@@ -13,6 +14,7 @@ export default function GatePasses() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ visitorName: "", visitorPhone: "", validFrom: "", validTo: "", purpose: "" });
   const [submitting, setSubmitting] = useState(false);
+  const [zoomedImage, setZoomedImage] = useState(null);
 
   const fetchPasses = async () => {
     try {
@@ -59,6 +61,7 @@ export default function GatePasses() {
 
   return (
     <AppLayout>
+      <ImageModal src={zoomedImage} onClose={() => setZoomedImage(null)} />
       <div className="page-header">
         <div>
           <h1>🎫 Gate Passes</h1>
@@ -141,6 +144,7 @@ export default function GatePasses() {
                     <img
                       src={pass.qrCode}
                       alt="QR Code"
+                      onClick={() => setZoomedImage(pass.qrCode)}
                       style={{
                         width: 260,
                         height: 260,
@@ -148,6 +152,7 @@ export default function GatePasses() {
                         borderRadius: 12,
                         padding: 8,
                         backgroundColor: "#fff",
+                        cursor: "zoom-in"
                       }}
                     />
                   </div>

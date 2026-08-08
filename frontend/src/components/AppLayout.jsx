@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import MobileSidebar from "./MobileSidebar.jsx";
+import usePWA from "../hooks/usePWA.js";
 
 const residentLinks = [
   { to: "/dashboard", label: "Home", icon: "🏡" },
@@ -50,6 +51,7 @@ export default function AppLayout({ children }) {
     typeof window !== "undefined" ? window.innerWidth <= 900 : false
   );
   const { user, logout } = useAuth();
+  const { canInstall, installPWA } = usePWA();
   const navigate = useNavigate();
   let links;
   if (user?.role === "admin") {
@@ -121,6 +123,11 @@ export default function AppLayout({ children }) {
             <div className="small muted" style={{ marginBottom: 10, marginTop: 4 }}>
               Invite code: <strong style={{ color: "var(--primary)", fontFamily: "var(--font-mono)" }}>{user.society.inviteCode}</strong>
             </div>
+          )}
+          {canInstall && (
+            <button className="btn btn-primary btn-sm btn-block" style={{ marginBottom: 10 }} onClick={installPWA}>
+              ⏬ Install App
+            </button>
           )}
           <button className="btn btn-outline btn-sm btn-block" onClick={handleLogoutClick}>
             Log out

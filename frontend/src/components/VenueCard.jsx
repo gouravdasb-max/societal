@@ -1,8 +1,21 @@
+import { useState } from "react";
+import ImageModal from "./ImageModal.jsx";
+
 export default function VenueCard({ venue, onBook, onEdit, onDelete }) {
+  const [isZoomed, setIsZoomed] = useState(false);
+
   return (
     <div className="card">
+      {isZoomed && <ImageModal src={venue.image} onClose={() => setIsZoomed(false)} />}
+      
       {venue.image ? (
-        <img src={venue.image} className="venue-image" alt={venue.name} />
+        <img 
+          src={venue.image} 
+          className="venue-image" 
+          alt={venue.name} 
+          onClick={() => setIsZoomed(true)} 
+          style={{ cursor: "zoom-in" }}
+        />
       ) : (
         <div className="venue-image flex-between" style={{ justifyContent: "center", color: "var(--secondary-dark)" }}>
           🏛️

@@ -23,8 +23,9 @@ A full-stack society management web application that empowers residential commun
 ## ✨ Features
 
 ### 📱 Progressive Web App (PWA)
-- **Installable** — The platform functions purely natively as an installable Progressive Web App on mobile (iOS/Android).
+- **Installable** — The platform functions purely natively as an installable Progressive Web App on mobile (iOS/Android) and Desktop (macOS/Windows).
 - **Service Workers** — Caches critical UI shell architecture for remarkably fast loading speeds.
+- **Custom Install Hook** — Utilizes a dedicated `usePWA.js` React hook to intercept browser installation mechanics, allowing users to install the app natively via a persistent, elegant sidebar button (`⏬ Install App`) rather than intrusive popups.
 
 ### 🔐 Authentication & Authorization
 - **Email/Password Registration** with email verification (token-based via Nodemailer/Gmail SMTP).
@@ -123,7 +124,7 @@ A full-stack society management web application that empowers residential commun
 | **bcrypt** | Password hashing |
 | **Multer** | File upload handling |
 | **Cloudinary** | Cloud image storage (avatars, QR codes, complaint images) |
-| **Nodemailer** | Email delivery (verification, password reset) |
+| **Brevo REST API** | HTTP-based Email delivery (verification, passwords, MFA) — bypassing cloud provider SMTP firewalls |
 | **Helmet** | HTTP security headers |
 | **express-rate-limit** | Brute force protection |
 | **express-mongo-sanitize** | NoSQL injection prevention |
@@ -145,8 +146,8 @@ A full-stack society management web application that empowers residential commun
                                     │
                                     ▼
                            ┌──────────────┐
-                           │ Gmail SMTP   │
-                           │ (Nodemailer) │
+                           │ Brevo REST   │
+                           │ API (HTTP)   │
                            └──────────────┘
 ```
 
@@ -206,7 +207,7 @@ societal/
 │           ├── ApiError.js
 │           ├── ApiResponse.js
 │           ├── cloudinary.js
-│           ├── email.js                    # Verification + OTP email templates
+│           ├── email.js                    # Brevo API automated HTTP fetcher
 │           └── qrCode.js                   # QR generation + Cloudinary upload
 │
 ├── frontend/
@@ -219,13 +220,16 @@ societal/
 │       ├── index.css                       # Complete design system (~2400 lines)
 │       ├── context/
 │       │   └── AuthContext.jsx             # Global auth state, login/logout/register
+│       ├── hooks/
+│       │   └── usePWA.js                   # Intercepts beforeinstallprompt for persistent App Install
 │       ├── services/
 │       │   ├── api.js                      # Axios instance with token interceptors
 │       │   └── socket.js                   # Socket.IO client connection manager
 │       ├── components/
-│       │   ├── AppLayout.jsx               # Sidebar + mobile nav + profile card
+│       │   ├── AppLayout.jsx               # Sidebar + mobile nav + app install trigger
 │       │   ├── MobileSidebar.jsx           # Responsive mobile navigation drawer
 │       │   ├── ProtectedRoute.jsx          # Auth + role guards for routes
+│       │   ├── ImageModal.jsx              # Global React Portal for full-screen photo zooming
 │       │   ├── BookingCard.jsx
 │       │   ├── AnnouncementCard.jsx
 │       │   ├── VenueCard.jsx
@@ -325,9 +329,8 @@ Create a `backend/.env` file based on `.env.sample`:
 | `CLOUDINARY_API_KEY` | Cloudinary API key | `123456789012345` |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | `abcdef...` |
 | `ADMIN_SIGNUP_CODE` | Secret code required for admin registration | `MY_SECRET_CODE` |
-| `GMAIL_USER` | Gmail address for sending emails | `you@gmail.com` |
-| `GMAIL_APP_PASSWORD` | Gmail App Password (not regular password) | `abcd efgh ijkl mnop` |
-| `EMAIL_FROM` | Sender display name | `Societal <you@gmail.com>` |
+| `BREVO_API_KEY` | Brevo REST API Key | `xkeysib-123456...` |
+| `GMAIL_USER` | Verified Brevo sender email address | `you@gmail.com` |
 | `CLIENT_URL` | Frontend URL (used in email links) | `http://localhost:5173` |
 
 Frontend `.env`:

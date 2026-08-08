@@ -3,6 +3,7 @@ import AppLayout from "../components/AppLayout.jsx";
 import Loader from "../components/Loader.jsx";
 import api from "../services/api.js";
 import Select from "../components/Select.jsx";
+import ImageModal from "../components/ImageModal.jsx";
 
 const statusPill = { open: "pill-warning", in_progress: "pill-primary", resolved: "pill-success" };
 
@@ -14,6 +15,7 @@ export default function Complaints() {
   const [imagePreview, setImagePreview] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [zoomedImage, setZoomedImage] = useState(null);
 
   const load = () => {
     setLoading(true);
@@ -58,6 +60,7 @@ export default function Complaints() {
 
   return (
     <AppLayout>
+      <ImageModal src={zoomedImage} onClose={() => setZoomedImage(null)} />
       <div className="page-header">
         <div>
           <h1>Complaints</h1>
@@ -144,6 +147,7 @@ export default function Complaints() {
                     <img
                       src={c.imageUrl}
                       alt={c.title}
+                      onClick={() => setZoomedImage(c.imageUrl)}
                       style={{
                         marginTop: 10,
                         width: "100%",
@@ -151,6 +155,7 @@ export default function Complaints() {
                         objectFit: "cover",
                         borderRadius: 12,
                         border: "1px solid rgba(89, 255, 138, .18)",
+                        cursor: "zoom-in"
                       }}
                     />
                   )}
