@@ -52,6 +52,13 @@ html,
 body {
   margin: 0;
   padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  overflow: hidden;
 }
 
 body {
@@ -294,7 +301,8 @@ button {
 .app-shell {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -408,8 +416,11 @@ button {
 }
 
 .main-content-wrapper {
-  overflow-x:hidden ;
+  overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 .main-content {
