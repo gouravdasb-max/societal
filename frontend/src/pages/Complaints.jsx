@@ -69,7 +69,7 @@ export default function Complaints() {
       </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-        <div className="card" style={{ maxWidth: 600 }}>
+        <div className="card">
           <h3 style={{ marginBottom: 14, fontSize: 17 }}>Raise a new complaint</h3>
           {error && <div className="alert alert-error">{error}</div>}
           <form onSubmit={submit}>
