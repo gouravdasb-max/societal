@@ -68,8 +68,8 @@ export default function Complaints() {
         </div>
       </div>
 
-      <div className="grid grid-2">
-        <div className="card">
+      <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+        <div className="card" style={{ maxWidth: 600 }}>
           <h3 style={{ marginBottom: 14, fontSize: 17 }}>Raise a new complaint</h3>
           {error && <div className="alert alert-error">{error}</div>}
           <form onSubmit={submit}>
@@ -77,15 +77,25 @@ export default function Complaints() {
               <label>Title</label>
               <input required value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Leaking pipe in parking area" />
             </div>
-            <div className="field">
-              <label>Category</label>
-              <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
-                <option value="plumbing">Plumbing</option>
-                <option value="electrical">Electrical</option>
-                <option value="security">Security</option>
-                <option value="cleanliness">Cleanliness</option>
-                <option value="other">Other</option>
-              </Select>
+            <div className="grid grid-2">
+              <div className="field">
+                <label>Category</label>
+                <Select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
+                  <option value="plumbing">Plumbing</option>
+                  <option value="electrical">Electrical</option>
+                  <option value="security">Security</option>
+                  <option value="cleanliness">Cleanliness</option>
+                  <option value="other">Other</option>
+                </Select>
+              </div>
+              <div className="field">
+                <label>Optional image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                />
+              </div>
             </div>
             <div className="field">
               <label>Description</label>
@@ -97,52 +107,41 @@ export default function Complaints() {
                 style={{ color: "var(--text)" }}
               />
             </div>
-            <div className="field">
-              <label>Optional image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Complaint preview"
+                style={{
+                  marginBottom: 16,
+                  width: "100%",
+                  maxHeight: 200,
+                  objectFit: "cover",
+                  borderRadius: 12,
+                  border: "1px solid rgba(89, 255, 138, .18)",
+                }}
               />
-              <p className="muted small" style={{ marginTop: 6 }}>
-                Add a photo if it helps explain the issue better.
-              </p>
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Complaint preview"
-                  style={{
-                    marginTop: 10,
-                    width: "100%",
-                    maxHeight: 220,
-                    objectFit: "cover",
-                    borderRadius: 12,
-                    border: "1px solid rgba(89, 255, 138, .18)",
-                  }}
-                />
-              )}
-            </div>
-            <button className="btn btn-primary btn-block" disabled={submitting}>
+            )}
+            <button className="btn btn-primary" style={{ width: "100%" }} disabled={submitting}>
               {submitting ? "Submitting..." : "Submit complaint"}
             </button>
           </form>
         </div>
 
         <div>
-          <h3 style={{ marginBottom: 14, fontSize: 17 }}>Your complaints</h3>
+          <h3 style={{ marginBottom: 14, fontSize: 17 }}>Your registered complaints</h3>
           {loading ? (
             <Loader />
           ) : complaints.length === 0 ? (
             <div className="empty-state card"><p>No complaints raised yet.</p></div>
           ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
               {complaints.map((c) => (
-                <div key={c._id} className="card">
+                <div key={c._id} className="card" style={{ display: "flex", flexDirection: "column" }}>
                   <div className="flex-between">
                     <strong style={{ fontSize: 14.5 }}>{c.title}</strong>
                     <span className={`pill ${statusPill[c.status]}`}>{c.status.replace("_", " ")}</span>
                   </div>
-                  <p className="muted small" style={{ marginTop: 6 }}>{c.description}</p>
+                  <p className="muted small" style={{ marginTop: 6, flex: 1 }}>{c.description}</p>
                   {c.imageUrl && (
                     <img
                       src={c.imageUrl}
@@ -151,7 +150,7 @@ export default function Complaints() {
                       style={{
                         marginTop: 10,
                         width: "100%",
-                        maxHeight: 240,
+                        height: 140, /* Fixed height thumbnail */
                         objectFit: "cover",
                         borderRadius: 12,
                         border: "1px solid rgba(89, 255, 138, .18)",
@@ -163,7 +162,7 @@ export default function Complaints() {
                     <p
                       className="small"
                       style={{
-                        marginTop: 8,
+                        marginTop: 12,
                         background: "rgba(89, 255, 138, .06)",
                         padding: 10,
                         borderRadius: 8,

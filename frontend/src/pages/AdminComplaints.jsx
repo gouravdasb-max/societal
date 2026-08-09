@@ -47,9 +47,9 @@ export default function AdminComplaints() {
       ) : complaints.length === 0 ? (
         <div className="empty-state card"><h3>No complaints found</h3></div>
       ) : (
-        <div className="grid grid-2">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
           {complaints.map((c) => (
-            <div key={c._id} className="card">
+            <div key={c._id} className="card" style={{ display: "flex", flexDirection: "column" }}>
               <div className="flex-between">
                 <strong style={{ fontSize: 15 }}>{c.title}</strong>
                 <span className={`pill ${statusPill[c.status]}`}>{c.status.replace("_", " ")}</span>
@@ -57,7 +57,7 @@ export default function AdminComplaints() {
               <p className="muted small" style={{ marginTop: 6 }}>
                 {c.raisedBy?.fullName} · Flat {c.raisedBy?.flatNumber || "—"} · {c.category}
               </p>
-              <p style={{ marginTop: 10, fontSize: 14 }}>{c.description}</p>
+              <p style={{ marginTop: 10, fontSize: 14, flex: 1 }}>{c.description}</p>
               {c.imageUrl && (
                 <img
                   src={c.imageUrl}
@@ -66,7 +66,7 @@ export default function AdminComplaints() {
                   style={{
                     marginTop: 10,
                     width: "100%",
-                    maxHeight: 240,
+                    height: 180, /* Fixed symmetrical thumbnail size */
                     objectFit: "cover",
                     borderRadius: 12,
                     border: "1px solid rgba(89, 255, 138, .18)",
@@ -90,8 +90,8 @@ export default function AdminComplaints() {
                 }}
               />
               <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-                <button className="btn btn-secondary btn-sm" onClick={() => update(c._id, "in_progress")}>Mark in progress</button>
-                <button className="btn btn-primary btn-sm" onClick={() => update(c._id, "resolved")}>Mark resolved</button>
+                <button className="btn btn-secondary btn-sm" style={{ flex: 1 }} onClick={() => update(c._id, "in_progress")}>Mark in progress</button>
+                <button className="btn btn-primary btn-sm" style={{ flex: 1 }} onClick={() => update(c._id, "resolved")}>Mark resolved</button>
               </div>
             </div>
           ))}
