@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import AppLayout from "../components/AppLayout.jsx";
 import Loader from "../components/Loader.jsx";
 import api from "../services/api.js";
@@ -86,64 +87,81 @@ export default function MyBills() {
 
   return (
     <AppLayout>
-      <div className="page-header">
-        <div>
-          <h1>💰 My Bills</h1>
-          <p>View and pay your maintenance bills.</p>
-        </div>
-      </div>
-
-      {totalPending > 0 && (
-        <div className="card billing-summary-card" style={{ marginBottom: 24 }}>
-          <div className="muted small" style={{ marginBottom: 4 }}>Outstanding balance</div>
-          <div style={{ fontFamily: "var(--font-display)", fontSize: 36, color: "var(--accent)", fontWeight: 700 }}>
-            ₹{totalPending.toLocaleString()}
+      <div style={{ display: "flex", flexDirection: "column", height: "100%", maxHeight: "calc(100vh - 48px)" }}>
+        <div className="page-header" style={{ flexShrink: 0 }}>
+          <div>
+            <h1>💰 My Bills</h1>
+            <p>View and pay your maintenance bills.</p>
           </div>
         </div>
-      )}
 
-      {loading ? (
-        <Loader />
-      ) : bills.length === 0 ? (
-        <div className="empty-state">
-          <h3>No bills yet</h3>
-          <p>Your maintenance bills will appear here.</p>
-        </div>
-      ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {bills.map((bill, i) => (
-            <div key={bill._id} className="card" style={{ animationDelay: `${i * 0.06}s` }}>
-              <div className="flex-between">
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <strong style={{ fontSize: 15 }}>
-                      {MONTHS[bill.month - 1]} {bill.year}
-                    </strong>
-                    <span className={`pill ${STATUS_PILL[bill.status] || "pill-muted"}`}>{bill.status}</span>
+        {totalPending > 0 && (
+          <div className="card billing-summary-card" style={{ marginBottom: 20, flexShrink: 0 }}>
+            <div className="muted small" style={{ marginBottom: 4 }}>Outstanding balance</div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 36, color: "var(--accent)", fontWeight: 700 }}>
+              ₹{totalPending.toLocaleString()}
+            </div>
+          </div>
+        )}
+
+        {loading ? (
+          <Loader />
+        ) : bills.length === 0 ? (
+          <div className="empty-state" style={{ flex: 1 }}>
+            <h3>No bills yet</h3>
+            <p>Your maintenance bills will appear here.</p>
+          </div>
+        ) : (
+          <div style={{
+            display: "flex", 
+            flexDirection: "column", 
+            gap: 12, 
+            flex: 1, 
+            overflowY: "auto", 
+            paddingRight: 8,
+            paddingBottom: 24,
+            borderRadius: 8,
+            /* Smooth fade out at the bottom using standard CSS tricks */
+            boxShadow: "inset 0 -20px 20px -20px rgba(0,0,0,0.5)"
+          }}>
+            {bills.map((bill, i) => (
+              <div key={bill._id} className="card" style={{ animationDelay: `${i * 0.06}s`, flexShrink: 0 }}>
+                <div className="flex-between">
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <strong style={{ fontSize: 15 }}>
+                        {MONTHS[bill.month - 1]} {bill.year}
+                      </strong>
+                      <span className={`pill ${STATUS_PILL[bill.status] || "pill-muted"}`}>{bill.status}</span>
+                    </div>
+                    <div className="muted small" style={{ marginTop: 4 }}>
+                      {bill.description}
+                      {bill.paidAt && ` · Paid on ${new Date(bill.paidAt).toLocaleDateString()}`}
+                    </div>
                   </div>
-                  <div className="muted small" style={{ marginTop: 4 }}>
-                    {bill.description}
-                    {bill.paidAt && ` · Paid on ${new Date(bill.paidAt).toLocaleDateString()}`}
+                  <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                    <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: bill.status === "paid" ? "var(--success)" : "var(--text)" }}>
+                      ₹{bill.amount.toLocaleString()}
+                    </div>
+                    {bill.status === "pending" || bill.status === "overdue" ? (
+                      <button className="btn btn-primary btn-sm" onClick={() => openPayModal(bill)}>
+                        Pay Now
+                      </button>
+                    ) : null}
                   </div>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: bill.status === "paid" ? "var(--success)" : "var(--text)" }}>
-                    ₹{bill.amount.toLocaleString()}
-                  </div>
-                  {bill.status === "pending" || bill.status === "overdue" ? (
-                    <button className="btn btn-primary btn-sm" onClick={() => openPayModal(bill)}>
-                      Pay Now
-                    </button>
-                  ) : null}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
 
-            {payModal && (
-        <div className="modal-backdrop" onClick={() => payStep !== "processing" && setPayModal(null)}>
+            {payModal && createPortal(
+        <div 
+          className="modal-backdrop" 
+          onClick={() => payStep !== "processing" && setPayModal(null)}
+          style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 9999 }}
+        >
           <div className="card modal-card payment-modal" onClick={(e) => e.stopPropagation()}>
             {payStep === "confirm" && (
               <>
@@ -237,7 +255,8 @@ export default function MyBills() {
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </AppLayout>
   );
