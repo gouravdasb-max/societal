@@ -28,7 +28,7 @@ A full-stack society management web application that empowers residential commun
 - **Custom Install Hook** — Utilizes a dedicated `usePWA.js` React hook to intercept browser installation mechanics, allowing users to install the app natively via a persistent, elegant sidebar button (`⏬ Install App`) rather than intrusive popups.
 
 ### 🔐 Authentication & Authorization
-- **Email/Password Registration** with email verification (token-based via Nodemailer/Gmail SMTP).
+- **Email/Password Registration** with email verification (token-based via Brevo).
 - **JWT dual-token auth** — short-lived access tokens + long-lived refresh tokens stored in HTTP-only cookies.
 - **Role-based access control** — Admin, Resident, and Guard roles with dedicated dashboards.
 - **Admin approval gate** — new resident accounts require admin approval before login.
@@ -87,8 +87,8 @@ A full-stack society management web application that empowers residential commun
 
 ### 💰 Billing & Payments
 - **Admin generates bills** per resident (maintenance fees, utilities, etc).
-- **Residents view** their bills and **simulate payment** via an in-app payment flow.
-- **Status tracking** — pending / paid / overdue with color-coded pills.
+- **Native UPI Integration** — Admins configure a society-specific UPI ID. Residents pay externally and submit their UTR/Transaction ID for manual admin approval.
+- **Status tracking** — pending / verification_pending / paid / overdue with color-coded pills.
 - **Expense tracking** — admin logs society expenses for transparency.
 
 ### 👥 Resident Directory

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import AppLayout from "../components/AppLayout.jsx";
 import Loader from "../components/Loader.jsx";
 import VenueCard from "../components/VenueCard.jsx";
@@ -66,10 +67,11 @@ export default function Venues() {
         </div>
       )}
 
-      {modalVenue && (
+      {modalVenue && createPortal(
         <div
           className="modal-backdrop"
           onClick={() => setModalVenue(null)}
+          style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 99999 }}
         >
           <div className="card modal-card" style={{ maxWidth: 420, width: "100%" }} onClick={(e) => e.stopPropagation()}>
             <h3 style={{ marginBottom: 4 }}>Book {modalVenue.name}</h3>
@@ -105,7 +107,8 @@ export default function Venues() {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </AppLayout>
   );

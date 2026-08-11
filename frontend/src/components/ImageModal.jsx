@@ -1,4 +1,3 @@
-import { X } from "lucide-react";
 import { createPortal } from "react-dom";
 
 export default function ImageModal({ src, onClose }) {
@@ -40,7 +39,7 @@ export default function ImageModal({ src, onClose }) {
             padding: 8
           }}
         >
-          <X size={32} />
+          <span style={{ fontSize: "32px", lineHeight: "1" }}>&times;</span>
         </button>
         <img 
           src={src} 

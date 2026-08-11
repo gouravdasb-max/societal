@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
-  const { login, verifyAdminLogin } = useAuth();
+  const { login, verifyAdminLogin, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "", otp: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [requiresOtp, setRequiresOtp] = useState(false);
+
+  if (authLoading) return null;
+  if (user) {
+    if (user.role === "admin") return <Navigate to="/admin" replace />;
+    if (user.role === "guard") return <Navigate to="/guard" replace />;
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
