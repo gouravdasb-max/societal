@@ -1,10 +1,10 @@
-# 🏘️ Societal — Society Management Platform
+# Societal — Society Management Platform
 
 A full-stack society management web application that empowers residential communities with digital tools for communication, administration, security, and billing. Built with a modern **React + Vite** frontend and a robust **Node.js + Express** REST API backend, connected by **MongoDB** and real-time **Socket.IO** chat.
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -20,14 +20,14 @@ A full-stack society management web application that empowers residential commun
 
 ---
 
-## ✨ Features
+## Features
 
-### 📱 Progressive Web App (PWA)
+### Progressive Web App (PWA)
 - **Installable** — The platform functions purely natively as an installable Progressive Web App on mobile (iOS/Android) and Desktop (macOS/Windows).
 - **Service Workers** — Caches critical UI shell architecture for remarkably fast loading speeds.
-- **Custom Install Hook** — Utilizes a dedicated `usePWA.js` React hook to intercept browser installation mechanics, allowing users to install the app natively via a persistent, elegant sidebar button (`⏬ Install App`) rather than intrusive popups.
+- **Custom Install Hook** — Utilizes a dedicated `usePWA.js` React hook to intercept browser installation mechanics, allowing users to install the app natively via a persistent, elegant sidebar button (`Install App`) rather than intrusive popups.
 
-### 🔐 Authentication & Authorization
+### Authentication & Authorization
 - **Email/Password Registration** with email verification (token-based via Brevo).
 - **JWT dual-token auth** — short-lived access tokens + long-lived refresh tokens stored in HTTP-only cookies.
 - **Role-based access control** — Admin, Resident, and Guard roles with dedicated dashboards.
@@ -36,7 +36,7 @@ A full-stack society management web application that empowers residential commun
 - **Admin Multi-Factor Auth (MFA)** — OTP cryptographically enforces safety sequentially during Admin Logins and Destroy Society actions.
 - **Admin can create Guard accounts** directly without self-registration.
 
-### 👤 User Profile Management
+### User Profile Management
 - **Edit Profile** — update name, phone number, and avatar.
 - **Cloudinary avatar uploads** via `multer` + Cloudinary SDK.
 - **Immutable flat number** — only admin can change a resident's flat assignment.
@@ -44,17 +44,17 @@ A full-stack society management web application that empowers residential commun
 - **Data Snapshotting** — Employs intelligent Mongoose Interceptors to retain historic gate passes and bills for leaving residents, gracefully wiping their primary PII references.
 - **Destroy Society (Admin)** — secured by OTP MFA, admins can irreversibly delete the entire society and cascade-wipe all related data (users, bills, passes, polls, messages, events, etc).
 
-### 📢 Announcements
+### Announcements
 - **Admin creates** society-wide announcements.
 - **Residents view** a chronological announcements feed.
 
-### 🗓️ Venue Booking
+### Venue Booking
 - **Admin manages venues** (create, update, delete community facilities).
 - **Residents browse venues** and submit booking requests with date/time.
 - **Admin approval workflow** — approve or reject bookings.
 - **Residents can cancel** their own pending bookings.
 
-### 🛡️ Gate Pass System
+### Gate Pass System
 - **QR-code-powered** digital gate passes with Cloudinary-hosted QR images.
 - **Validity date range** — `validFrom` / `validTo` with a max limit of **30 days**.
 - **Server-side validation** — no past dates, automatic expiry detection.
@@ -62,43 +62,43 @@ A full-stack society management web application that empowers residential commun
 - **Status tracking** — active → used / expired / cancelled.
 - **Guard scan history** with date filtering.
 
-### 💬 Real-Time Community Chat
+### Real-Time Community Chat
 - **Socket.IO-powered** live messaging scoped per society.
 - **JWT-authenticated WebSocket** connections (cookie or header token).
 - **Interactive Multi-User Typing** — Custom animated real-time tracking when several users are actively composing messages (e.g. "Alice and Bob are typing...").
 - **Day dividers** and chronological message history.
 - **Avatar support** — user avatars render next to messages.
 
-### 📋 Complaints
+### Complaints
 - **Residents file complaints** categorized by type (plumbing, electrical, security, cleanliness, other).
 - **Image attachments** via Cloudinary.
 - **Admin manages** complaint status (open → in_progress → resolved) and can respond.
 
-### 📊 Community Polls
+### Community Polls
 - **Admin creates polls** with multiple options and optional expiry dates.
 - **Residents vote** (one vote per user, enforced server-side).
 - **Live vote counts** with animated progress bars.
 - **Admin can close** polls manually.
 
-### 📅 Events & Calendar
+### Events & Calendar
 - **Admin creates** community events (festivals, meetings, maintenance schedules).
 - **Calendar view** with interactive date cells showing event indicators.
 - **Category-based** color coding.
 
-### 💰 Billing & Payments
+### Billing & Payments
 - **Admin generates bills** per resident (maintenance fees, utilities, etc).
 - **Native UPI Integration** — Admins configure a society-specific UPI ID. Residents pay externally and submit their UTR/Transaction ID for manual admin approval.
 - **Status tracking** — pending / verification_pending / paid / overdue with color-coded pills.
 - **Expense tracking** — admin logs society expenses for transparency.
 
-### 👥 Resident Directory
+### Resident Directory
 - **Searchable directory** of all approved residents.
 - **Shows** name, flat number, phone, and avatar.
 - **Sanitized search** — regex-escaped queries to prevent injection.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 | Technology | Purpose |
@@ -132,7 +132,7 @@ A full-stack society management web application that empowers residential commun
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐        ┌─────────────────┐        ┌──────────────┐
@@ -153,7 +153,7 @@ A full-stack society management web application that empowers residential commun
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 societal/
@@ -272,7 +272,7 @@ societal/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -312,7 +312,7 @@ The frontend starts on **http://localhost:5173**.
 
 ---
 
-## 🔧 Environment Variables
+## Environment Variables
 
 Create a `backend/.env` file based on `.env.sample`:
 
@@ -341,7 +341,7 @@ Frontend `.env`:
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 All routes are prefixed with `/api/v1`.
 
@@ -387,7 +387,7 @@ Each follows standard REST patterns — see source route files in `backend/src/r
 
 ---
 
-## 👥 User Roles
+## User Roles
 
 | Role | Dashboard | Key Capabilities |
 |---|---|---|
@@ -397,7 +397,7 @@ Each follows standard REST patterns — see source route files in `backend/src/r
 
 ---
 
-## 🔒 Security
+## Security
 
 | Measure | Details |
 |---|---|
@@ -412,7 +412,7 @@ Each follows standard REST patterns — see source route files in `backend/src/r
 
 ---
 
-## 🎨 UI / Design System
+## UI / Design System
 
 The application uses a fully custom CSS design system (**~2400 lines**) with:
 
@@ -428,6 +428,6 @@ The application uses a fully custom CSS design system (**~2400 lines**) with:
 
 ---
 
-## 📄 License
+## License
 
 This project is provided as-is for educational and personal use.
