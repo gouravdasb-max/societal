@@ -279,12 +279,12 @@ societal/
 - **Node.js** ≥ 18
 - **MongoDB** (local or Atlas)
 - **Cloudinary** account (free tier works)
-- **Gmail** account with an [App Password](https://myaccount.google.com/apppasswords) for email functionality
+- **Gmail** account with an [App Password](https://myaccount.google.com/apppasswords or use Brevo free tier for 300 gmails per day) for email functionality
 
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/gouravdasb-max/societal
 cd societal
 ```
 
